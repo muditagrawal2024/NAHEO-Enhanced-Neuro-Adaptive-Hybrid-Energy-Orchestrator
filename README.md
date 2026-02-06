@@ -219,10 +219,45 @@ Memory footprint:
 
 ## References
 
-1. Watkins, C.J.C.H. (1989). Learning from Delayed Rewards. PhD Thesis, Cambridge University.
-2. Kalman, R.E. (1960). A New Approach to Linear Filtering and Prediction Problems. ASME Journal of Basic Engineering.
-3. Camacho, E.F. & Bordons, C. (2007). Model Predictive Control. Springer-Verlag.
-4. Heemels, W.P.M.H. et al. (2012). An Introduction to Event-Triggered and Self-Triggered Control. IEEE Conference on Decision and Control.
+### Foundational Works
+
+1. Kalman, R.E. (1960). "A New Approach to Linear Filtering and Prediction Problems." *ASME Journal of Basic Engineering*, 82(1), 35-45.
+
+2. Watkins, C.J.C.H. (1989). *Learning from Delayed Rewards*. PhD Thesis, Cambridge University.
+
+### Extended Kalman Filtering for Battery Management
+
+3. Plett, G.L. (2004). "Extended Kalman filtering for battery management systems of LiPB-based HEV battery packs: Part 1. Background." *Journal of Power Sources*, 134(2), 252-261.
+
+4. He, H., Xiong, R., & Fan, J. (2011). "Evaluation of lithium-ion battery equivalent circuit models for state of charge estimation by an extended Kalman filter." *Energies*, 4(4), 582-598.
+
+5. Li, X., et al. (2021). "A review of lithium-ion battery state of charge estimation methods: equivalent circuit model and data-driven approach." *Measurement*, 174, 108968.
+
+6. Wang, Y., et al. (2022). "State of charge estimation for lithium-ion batteries based on a novel adaptive extended Kalman filter and deep neural network." *Journal of Energy Storage*, 50, 104566.
+
+### Model Predictive Control in Power Electronics
+
+7. Camacho, E.F. & Bordons, C. (2007). *Model Predictive Control*. Springer-Verlag.
+
+8. Cortés, P., et al. (2008). "Model predictive control in power electronics: A critical review." *IEEE Transactions on Industrial Electronics*, 55(12), 4312-4324.
+
+9. Geyer, T., & Quevedo, D.E. (2014). "Multistep finite control set model predictive control for power electronics." *IEEE Transactions on Power Electronics*, 29(12), 6836-6846.
+
+### Event-Triggered and Self-Triggered Control
+
+10. Heemels, W.P.M.H., et al. (2012). "An introduction to event-triggered and self-triggered control." *IEEE Conference on Decision and Control*, 3270-3285.
+
+11. Borgers, D.P., & Heemels, W.P.M.H. (2014). "Event-triggered control of linear systems with output feedback." *IEEE Transactions on Automatic Control*, 59(7), 1923-1928.
+
+12. Gatsis, K., et al. (2018). "Control with unreliability and intermittency: A review." *Proceedings of the IEEE*, 106(7), 1149-1163.
+
+### Reinforcement Learning for Energy Management
+
+13. Mao, H., et al. (2016). "Resource management with deep reinforcement learning." *ACM Workshop on Hot Topics in Networks (HotNets)*, 50-56.
+
+14. Racua-Rosales, A.I., et al. (2020). "Reinforcement Learning for Energy Management in Hybrid Electric Vehicles: A Review." *IEEE Access*, 8, 172323-172340.
+
+15. Zhang, T., et al. (2023). "Deep reinforcement learning for energy-efficient edge computing: A survey." *IEEE Communications Surveys & Tutorials*, 25(2), 791-828.
 
 ---
 
