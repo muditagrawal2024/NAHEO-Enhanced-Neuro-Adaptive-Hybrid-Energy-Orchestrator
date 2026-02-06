@@ -28,8 +28,10 @@ class TimerBasedAlgorithm(BaseAlgorithm):
     
     def should_activate(self, timestamp: float, user_request: bool, context: Dict[str, Any]) -> bool:
         """Check if current time falls within scheduled active periods."""
+        # Use time_of_day from context (seconds since midnight) for schedule matching
+        time_of_day = context.get('time_of_day', timestamp)
         for start_time, end_time in self.schedule:
-            if start_time <= timestamp < end_time:
+            if start_time <= time_of_day < end_time:
                 return True
         return False
     

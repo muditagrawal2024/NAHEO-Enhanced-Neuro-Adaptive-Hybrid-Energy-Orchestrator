@@ -21,6 +21,9 @@ class UserBehaviorGenerator:
         if seed is not None:
             np.random.seed(seed)
         self.seed = seed
+        
+        # Configuration constants
+        self.NOISE_STD_DEV = 0.02  # Standard deviation for probability noise
     
     def generate_pattern(self, duration: int, pattern_type: str = 'realistic') -> List[bool]:
         """
@@ -76,7 +79,7 @@ class UserBehaviorGenerator:
                 base_prob = 0.05
             
             # Add some randomness
-            prob = base_prob + np.random.normal(0, 0.02)
+            prob = base_prob + np.random.normal(0, self.NOISE_STD_DEV)
             prob = max(0, min(1, prob))
             
             requests.append(np.random.random() < prob)

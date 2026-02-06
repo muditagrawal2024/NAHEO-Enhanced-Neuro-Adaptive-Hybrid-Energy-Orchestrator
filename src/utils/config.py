@@ -3,7 +3,7 @@ Configuration management for NAHEO simulations.
 """
 
 import json
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List, Tuple, Optional
 from dataclasses import dataclass, asdict
 
 
@@ -21,8 +21,8 @@ class SimulationConfig:
     duration: int = 3600  # 1 hour default
     time_step: float = 1.0
     pattern_type: str = 'realistic'
-    random_seed: int = None
-    output_file: str = None
+    random_seed: Optional[int] = None
+    output_file: Optional[str] = None
     verbose: bool = True
 
 
