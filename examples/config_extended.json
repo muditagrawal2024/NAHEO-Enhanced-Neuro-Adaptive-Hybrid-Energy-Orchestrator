@@ -1,0 +1,59 @@
+{
+  "simulation": {
+    "duration": 86400,
+    "time_step": 1.0,
+    "pattern_type": "realistic",
+    "random_seed": 123,
+    "verbose": true,
+    "output_file": "results_extended.json"
+  },
+  "algorithms": [
+    {
+      "name": "Always-On",
+      "type": "always_on",
+      "parameters": {
+        "active_power": 10.0
+      }
+    },
+    {
+      "name": "Timer-Based Morning",
+      "type": "timer_based",
+      "parameters": {
+        "schedule": [[21600, 43200]],
+        "active_power": 10.0,
+        "idle_power": 1.0
+      }
+    },
+    {
+      "name": "Timer-Based Business Hours",
+      "type": "timer_based",
+      "parameters": {
+        "schedule": [[32400, 64800]],
+        "active_power": 10.0,
+        "idle_power": 1.0
+      }
+    },
+    {
+      "name": "NAHEO Conservative",
+      "type": "naheo_adaptive",
+      "parameters": {
+        "active_power": 10.0,
+        "idle_power": 1.0,
+        "learning_rate": 0.05,
+        "prediction_threshold": 0.6,
+        "wake_up_cost": 2.0
+      }
+    },
+    {
+      "name": "NAHEO Aggressive",
+      "type": "naheo_adaptive",
+      "parameters": {
+        "active_power": 10.0,
+        "idle_power": 1.0,
+        "learning_rate": 0.15,
+        "prediction_threshold": 0.3,
+        "wake_up_cost": 2.0
+      }
+    }
+  ]
+}

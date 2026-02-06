@@ -1,0 +1,39 @@
+{
+  "simulation": {
+    "duration": 3600,
+    "time_step": 1.0,
+    "pattern_type": "realistic",
+    "random_seed": 42,
+    "verbose": true,
+    "output_file": "results.json"
+  },
+  "algorithms": [
+    {
+      "name": "Always-On Baseline",
+      "type": "always_on",
+      "parameters": {
+        "active_power": 10.0
+      }
+    },
+    {
+      "name": "Timer-Based (9AM-8PM)",
+      "type": "timer_based",
+      "parameters": {
+        "schedule": [[32400, 72000]],
+        "active_power": 10.0,
+        "idle_power": 1.0
+      }
+    },
+    {
+      "name": "NAHEO Adaptive Learning",
+      "type": "naheo_adaptive",
+      "parameters": {
+        "active_power": 10.0,
+        "idle_power": 1.0,
+        "learning_rate": 0.1,
+        "prediction_threshold": 0.5,
+        "wake_up_cost": 2.0
+      }
+    }
+  ]
+}
