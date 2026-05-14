@@ -1,6 +1,77 @@
 # NAHEO: Neuro-Adaptive Hybrid Energy Orchestrator
 
+![NAHEO Overview](assets/naheo-overview.png)
+
 A Physics-Informed Hierarchical Control Framework for Battery-Operated Cyber-Physical Systems
+
+---
+
+## Quick Overview
+
+NAHEO is an AI-driven hierarchical energy orchestration framework designed for battery-operated Cyber-Physical Systems (CPS).
+
+The framework combines:
+- Virtual sensing using Extended Kalman Filtering (EKF)
+- Harvesting-Aware Reinforcement Learning (HARL)
+- Model Predictive Control (MPC)
+- Event-Triggered low-power execution
+
+to intelligently balance:
+- energy efficiency
+- thermal stability
+- adaptive performance
+- computational efficiency
+
+on resource-constrained embedded systems.
+
+### Key Highlights
+- 28.5% reduction in energy consumption
+- 47% CPU energy savings using Event-Triggered Control
+- Adaptive RL-based energy budgeting
+- Designed for ESP32-class embedded systems
+- Physics-informed predictive control framework
+
+---
+
+## Tech Stack
+
+### Core Technologies
+- Python
+- NumPy
+- SciPy
+- Matplotlib
+
+### AI & Control Systems
+- Reinforcement Learning (Q-Learning)
+- Extended Kalman Filtering (EKF)
+- Model Predictive Control (MPC)
+- Event-Triggered Control (ETC)
+
+### Domains
+- Embedded Systems
+- Cyber-Physical Systems
+- Intelligent Energy Management
+- Battery Optimization
+- Digital Twin Simulation
+
+---
+
+## Table of Contents
+
+- [Quick Overview](#quick-overview)
+- [Tech Stack](#tech-stack)
+- [Abstract](#abstract)
+- [System Architecture](#system-architecture)
+- [Mathematical Formulation](#mathematical-formulation)
+- [Experimental Scenarios](#experimental-scenarios)
+- [Validation Results](#validation-results)
+- [Implementation](#implementation)
+- [Key Contributions](#key-contributions)
+- [Comparison with Existing Approaches](#comparison-with-existing-approaches)
+- [Theoretical Foundation](#theoretical-foundation)
+- [Hardware Deployment](#hardware-deployment)
+- [References](#references)
+- [Conclusion](#conclusion)
 
 ---
 
@@ -10,7 +81,7 @@ The proliferation of battery-operated Cyber-Physical Systems (CPS), from IoT sen
 
 NAHEO addresses these challenges through a hierarchical control framework integrating:
 - Digital Twin architecture using Extended Kalman Filtering (EKF) for virtual sensing
-- Harvesting-Aware Reinforcement Learning (HARL) for strategic energy budgeting  
+- Harvesting-Aware Reinforcement Learning (HARL) for strategic energy budgeting
 - Model Predictive Control (MPC) with Event-Triggered Control (ETC) for optimal execution
 
 Validated through high-fidelity simulations, NAHEO achieves 25-30% reduction in energy consumption compared to standard baselines while maintaining system stability under stochastic load disturbances.
@@ -22,25 +93,35 @@ Validated through high-fidelity simulations, NAHEO achieves 25-30% reduction in 
 NAHEO operates on three hierarchical layers mimicking biological nervous systems:
 
 ### Layer 1: Perception (Virtual Sensor)
-**Component:** Extended Kalman Filter (EKF)  
+
+**Component:** Extended Kalman Filter (EKF)
+
 **Function:** Estimates hidden states (load current I and internal battery resistance R_int) using observable metrics (terminal voltage V_t and temperature T)
 
 This eliminates the need for physical current sensors while enabling real-time battery aging detection.
 
-### Layer 2: Strategy (Energy Economist)  
-**Component:** Harvesting-Aware Reinforcement Learning (HARL)  
+---
+
+### Layer 2: Strategy (Energy Economist)
+
+**Component:** Harvesting-Aware Reinforcement Learning (HARL)
+
 **Function:** Determines energy allocation policy based on battery state of charge (SoC). Maps system context to strategic parameter λ (aggressiveness factor)
 
 - High SoC: λ → 0 (prioritize performance)
 - Low SoC: λ → ∞ (prioritize energy conservation)
 
+---
+
 ### Layer 3: Execution (Physical Reactor)
-**Component:** Model Predictive Control (MPC) + Event-Triggered Control (ETC)  
-**Function:** 
+
+**Component:** Model Predictive Control (MPC) + Event-Triggered Control (ETC)
+
+**Function:**
 - MPC predicts future voltage trajectory and computes optimal PWM duty cycle
 - ETC monitors system stability and triggers CPU sleep during steady states
 
-```
+```text
 ┌───────────────────────────────────────┐
 │  LAYER 1: EKF Virtual Sensor          │
 │  Estimates [I, R] from voltage sag    │
@@ -63,51 +144,78 @@ This eliminates the need for physical current sensors while enabling real-time b
 
 ### Extended Kalman Filter (EKF)
 
-State vector: x_k = [I_k, R_k]^T  
-Measurement: z_k = V_ocv - V_terminal
+State vector:
 
-**Prediction:**
+```text
+x_k = [I_k, R_k]^T
 ```
+
+Measurement:
+
+```text
+z_k = V_ocv - V_terminal
+```
+
+### Prediction
+
+```text
 x̂_k|k-1 = x̂_k-1|k-1
 P_k|k-1 = P_k-1|k-1 + Q_k
 ```
 
-**Correction (with Jacobian linearization):**
-```
+### Correction (with Jacobian linearization)
+
+```text
 H_k = [R_k-1, I_k-1]
+
 K_k = P_k|k-1 H_k^T (H_k P_k|k-1 H_k^T + R_noise)^-1
+
 x̂_k|k = x̂_k|k-1 + K_k (z_k - h(x̂_k|k-1))
 ```
+
+---
 
 ### Q-Learning (HARL)
 
 Reward function with scarcity penalty:
-```
+
+```text
 R_t = Performance_t - Ψ(SoC_t) · Energy_t
+
 Ψ(SoC) = 1/(SoC + ε)
 ```
 
 Bellman update:
-```
+
+```text
 Q(S, A) ← Q(S, A) + α [R + γ max Q(S', A') - Q(S, A)]
 ```
+
+---
 
 ### Model Predictive Control (MPC)
 
 Optimization problem:
-```
+
+```text
 min J = (V_ref - V_k+1)^2 + λ (Δu)^2
 ```
 
-Where V_k+1 = a V_k + b u_k (first-order converter model)
+Where:
+
+```text
+V_k+1 = a V_k + b u_k
+```
 
 Analytical solution:
-```
+
+```text
 Δu* = b(V_ref - aV_k - bu_k-1) / (b^2 + λ)
 ```
 
 Event-triggered logic:
-```
+
+```text
 |Δu*| < δ_threshold ⟹ CPU Sleep
 ```
 
@@ -116,13 +224,38 @@ Event-triggered logic:
 ## Experimental Scenarios
 
 ### Scenario A: Abundance State
-Solar-powered sensor node at noon with 95% SoC. HARL sets λ ≈ 0, prioritizing performance and data throughput.
 
-### Scenario B: Scarcity State  
-Same node at midnight with 15% SoC. HARL sets λ ≫ 0, allowing voltage drift within safe bounds to extend operational lifetime until energy harvesting resumes.
+Solar-powered sensor node at noon with 95% SoC.
+
+HARL sets:
+```text
+λ ≈ 0
+```
+
+prioritizing performance and data throughput.
+
+---
+
+### Scenario B: Scarcity State
+
+Same node at midnight with 15% SoC.
+
+HARL sets:
+```text
+λ ≫ 0
+```
+
+allowing voltage drift within safe bounds to extend operational lifetime until energy harvesting resumes.
+
+---
 
 ### Scenario C: Disturbance State
-Robotic arm encounters sudden resistance. EKF detects current spike, ETC wakes CPU, and MPC clamps duty cycle to prevent thermal runaway.
+
+Robotic arm encounters sudden resistance.
+
+- EKF detects current spike
+- ETC wakes CPU
+- MPC clamps duty cycle to prevent thermal runaway
 
 ---
 
@@ -138,7 +271,7 @@ Comparison against tuned PID controller over 120-second operational cycle using 
 
 Energy savings achieved through:
 1. Sleep modes during steady states (ETC)
-2. Dynamic voltage scaling under light loads (HARL)  
+2. Dynamic voltage scaling under light loads (HARL)
 3. Predictive control eliminating overshoot (MPC)
 
 ---
@@ -146,11 +279,13 @@ Energy savings achieved through:
 ## Implementation
 
 ### Prerequisites
+
 ```bash
 pip install numpy matplotlib
 ```
 
 ### Execution
+
 ```bash
 python master_presentation.py
 ```
@@ -158,12 +293,15 @@ python master_presentation.py
 Generates 14 visualization plots demonstrating system performance across multiple scenarios.
 
 ### Repository Structure
-```
+
+```text
 NAHEO_Simulation/
-├── master_presentation.py    # Main demonstration script
-├── e_naheo_brain_v2.py        # Algorithm implementation
-├── virtual_physics.py         # Digital Twin physics engine
-└── README.md                  # Documentation
+├── assets/
+│   └── naheo-overview.png
+├── master_presentation.py
+├── e_naheo_brain_v2.py
+├── virtual_physics.py
+└── README.md
 ```
 
 ---
@@ -171,31 +309,54 @@ NAHEO_Simulation/
 ## Key Contributions
 
 1. **Virtual Sensing:** EKF eliminates hardware current sensors while tracking battery degradation
-2. **Cognitive Energy Management:** HARL learns context-dependent energy allocation policies  
+
+2. **Cognitive Energy Management:** HARL learns context-dependent energy allocation policies
+
 3. **Predictive Control:** MPC anticipates voltage drops before occurrence
+
 4. **Computational Efficiency:** ETC reduces CPU energy consumption by 47%
 
 ---
 
 ## Comparison with Existing Approaches
 
-**vs. PID Controllers**  
-Traditional PID: Reactive error correction after disturbances  
-NAHEO MPC: Predictive control using system model (200ms lookahead)
+### vs. PID Controllers
 
-**vs. Deep Reinforcement Learning**  
-Deep RL: Requires GPUs, 100K+ training samples  
-NAHEO: Tabular Q-learning, 2000 iterations, 60-byte memory footprint
+Traditional PID:
+- Reactive error correction after disturbances
 
-**vs. Fixed Scheduling**  
-Fixed: Identical behavior regardless of battery state  
-NAHEO: Harvesting-aware adaptation to energy availability
+NAHEO MPC:
+- Predictive control using system model (200ms lookahead)
+
+---
+
+### vs. Deep Reinforcement Learning
+
+Deep RL:
+- Requires GPUs
+- 100K+ training samples
+
+NAHEO:
+- Tabular Q-learning
+- 2000 iterations
+- 60-byte memory footprint
+
+---
+
+### vs. Fixed Scheduling
+
+Fixed:
+- Identical behavior regardless of battery state
+
+NAHEO:
+- Harvesting-aware adaptation to energy availability
 
 ---
 
 ## Theoretical Foundation
 
 NAHEO follows Physics-Informed Neuro-Symbolic Optimization (PINSO):
+
 - **Physics-Informed:** Ohm's Law and thermal dynamics constrain the control space
 - **Neuro-Adaptive:** Q-Learning enables online policy optimization
 - **Symbolic:** Hard-coded safety limits prevent unsafe states
@@ -206,63 +367,41 @@ This paradigm shift moves from reactive to cognitive energy management, combinin
 
 ## Hardware Deployment
 
-Target platform: ESP32 microcontroller (160MHz, 520KB RAM)  
-Battery: 2S Li-Ion (7.4V nominal)  
-Power stage: PWM-controlled buck converter
+Target platform:
+```text
+ESP32 microcontroller (160MHz, 520KB RAM)
+```
 
-Memory footprint:
-- Q-table: 60 bytes (5 states × 3 actions)  
-- EKF state: 32 bytes  
+Battery:
+```text
+2S Li-Ion (7.4V nominal)
+```
+
+Power stage:
+```text
+PWM-controlled buck converter
+```
+
+### Memory Footprint
+
+- Q-table: 60 bytes (5 states × 3 actions)
+- EKF state: 32 bytes
 - Total: < 2KB RAM
 
 ---
 
 ## References
-
-### Foundational Works
-
-1. Kalman, R.E. (1960). "A New Approach to Linear Filtering and Prediction Problems." *ASME Journal of Basic Engineering*, 82(1), 35-45.
-
-2. Watkins, C.J.C.H. (1989). *Learning from Delayed Rewards*. PhD Thesis, Cambridge University.
-
-### Extended Kalman Filtering for Battery Management
-
-3. Plett, G.L. (2004). "Extended Kalman filtering for battery management systems of LiPB-based HEV battery packs: Part 1. Background." *Journal of Power Sources*, 134(2), 252-261.
-
-4. He, H., Xiong, R., & Fan, J. (2011). "Evaluation of lithium-ion battery equivalent circuit models for state of charge estimation by an extended Kalman filter." *Energies*, 4(4), 582-598.
-
-5. Li, X., et al. (2021). "A review of lithium-ion battery state of charge estimation methods: equivalent circuit model and data-driven approach." *Measurement*, 174, 108968.
-
-6. Wang, Y., et al. (2022). "State of charge estimation for lithium-ion batteries based on a novel adaptive extended Kalman filter and deep neural network." *Journal of Energy Storage*, 50, 104566.
-
-### Model Predictive Control in Power Electronics
-
-7. Camacho, E.F. & Bordons, C. (2007). *Model Predictive Control*. Springer-Verlag.
-
-8. Cortés, P., et al. (2008). "Model predictive control in power electronics: A critical review." *IEEE Transactions on Industrial Electronics*, 55(12), 4312-4324.
-
-9. Geyer, T., & Quevedo, D.E. (2014). "Multistep finite control set model predictive control for power electronics." *IEEE Transactions on Power Electronics*, 29(12), 6836-6846.
-
-### Event-Triggered and Self-Triggered Control
-
-10. Heemels, W.P.M.H., et al. (2012). "An introduction to event-triggered and self-triggered control." *IEEE Conference on Decision and Control*, 3270-3285.
-
-11. Borgers, D.P., & Heemels, W.P.M.H. (2014). "Event-triggered control of linear systems with output feedback." *IEEE Transactions on Automatic Control*, 59(7), 1923-1928.
-
-12. Gatsis, K., et al. (2018). "Control with unreliability and intermittency: A review." *Proceedings of the IEEE*, 106(7), 1149-1163.
-
-### Reinforcement Learning for Energy Management
-
-13. Mao, H., et al. (2016). "Resource management with deep reinforcement learning." *ACM Workshop on Hot Topics in Networks (HotNets)*, 50-56.
-
-14. Racua-Rosales, A.I., et al. (2020). "Reinforcement Learning for Energy Management in Hybrid Electric Vehicles: A Review." *IEEE Access*, 8, 172323-172340.
-
-15. Zhang, T., et al. (2023). "Deep reinforcement learning for energy-efficient edge computing: A survey." *IEEE Communications Surveys & Tutorials*, 25(2), 791-828.
+(Keep your complete existing references section unchanged)
 
 ---
 
 ## Conclusion
 
-NAHEO demonstrates that intelligent energy orchestration can be achieved on resource-constrained embedded systems without cloud infrastructure. The framework is hardware-agnostic and scalable, applicable to devices from microwatt physiological sensors to kilowatt autonomous vehicles.
+NAHEO demonstrates that intelligent energy orchestration can be achieved on resource-constrained embedded systems without cloud infrastructure.
 
-Future work includes hardware validation on ESP32 platforms and extension to renewable energy harvesting prediction layers.
+The framework is hardware-agnostic and scalable, applicable to devices from microwatt physiological sensors to kilowatt autonomous vehicles.
+
+Future work includes:
+- hardware validation on ESP32 platforms
+- renewable energy harvesting prediction layers
+- real-time embedded deployment optimization
